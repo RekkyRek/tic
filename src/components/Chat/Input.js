@@ -1,0 +1,112 @@
+import '../../assets/css/Chat/Input.sass';
+import React, { Component } from 'react';
+import autosize from 'autosize';
+import Twemoji from 'react-twemoji';
+import twemoji from 'twemoji';
+import emoji from 'node-emoji';
+
+import Selector from './Selector';
+
+class Input extends React.Component {
+  constructor(props) {
+    super(props);
+    this.emojis = ['😀', '😃', '😄', '😁', '😆', '😅', '😂', '😊', '😇', '😉', '😌', '😍', '😘', '😗', '😙', '😚', '😋', '😜', '😝', '😧', '😩' ];
+    this.state = {
+      height: 14,
+      emoji: '😄',
+      text: '',
+      sel: 0,
+      searchRes: []
+    }
+  }
+  escape(str) {
+    let urls = str.match(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g)
+    console.log(urls)
+    if(urls != null) {
+      urls.forEach(function(url) {
+        str = str.replace(url, `[URL]${url}[/URL]`);
+      }, this);
+    }
+    str = str.replace(/\\/g, '\\\\');
+    str = str.replace(/\//g, '\\/');
+    str = str.replace(/\|/g, '\\p');
+    str = str.replace(/\n/g, '\\n');
+    str = str.replace(/\r/g, '\\r');
+    str = str.replace(/\t/g, '\\t');
+    str = str.replace(/\v/g, '\\v');
+    str = str.replace(/\f/g, '\\f');
+    str = str.replace(/ /g, '\\s');
+
+    return str;
+  }
+
+  componentWillMount() {
+    var imgs = [];
+    for (var i = 0; i < this.emojis.length; i++) {
+      imgs[i] = new Image();
+      let tmo = twemoji.parse(this.emojis[i]).match(/src\s*=\s*"(.+?)"/)[1];
+      imgs[i].src = tmo;
+    }
+  }
+
+  componentDidMount() {
+
+  }
+
+  handleKeyPress(e) {
+    const input = document.getElementById('chatInput');
+    //console.log(input.selectionStart, input.selectionEnd)
+    let word = input.value.substring(0,input.selectionEnd).split(' ').pop()
+    let isEmoji = false;
+    if(word.indexOf(':') > -1 && word.length > 1) {
+      word = word.split(':').pop();
+      isEmoji = true;
+      console.log(emoji.search(word).splice(0, 5))
+      this.setState({searchRes: emoji.search(word).splice(0, 5)})
+      } else {
+      this.setState({searchRes: []})
+    }
+    autosize(input)
+
+    this.setState({ text: input.value, sel: input.selectionStart });
+    console.log(e.shiftKey)
+    console.log(e.keyCode)
+    if (e.keyCode == 38) {
+      if(isEmoji) {
+        e.preventDefault()
+        this.refs.sel.up()
+        return false;
+      }
+    } else if(e.keyCode == 40) {
+      if(isEmoji) {
+        e.preventDefault()
+        console.log(this.refs)
+        this.refs.sel.down();
+        return false;
+      }
+    }
+    if (e.keyCode == 13 && e.shiftKey == false) {
+        console.log(this.props.client)
+        const msg = `sendtextmessage targetmode=2 msg=${this.escape(input.value)}`;
+        input.value = "";
+        this.props.client.send(msg);
+        document.getElementById('chatInput').style.height="31px";
+        return false;
+    }
+  }
+  render() {
+    return (
+      <div className="chatInput">
+        {this.state.searchRes.length > 0 && <Selector ref="sel" items={this.state.searchRes}/>}
+        <textarea type="text" placeholder="Message" id="chatInput" onClick={this.handleKeyPress.bind(this)} onChange={this.handleKeyPress.bind(this)} onKeyDown={this.handleKeyPress.bind(this)}/>
+        <button>
+          <Twemoji onMouseLeave={()=>{this.setState({ emoji: this.emojis[Math.floor(Math.random() * this.emojis.length)] })}}>
+            <span>{this.emojis[Math.floor(Math.random() * this.emojis.length)]}</span>
+          </Twemoji>
+        </button>
+      </div>
+    );
+  }
+}
+
+export default Input;

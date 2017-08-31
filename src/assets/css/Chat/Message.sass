@@ -1,0 +1,63 @@
+.chatMessage
+  display: flex
+  .chatImage
+    margin: 12px
+    height: 54px
+    width: 54px
+    border-radius: 54px
+    background: #fff
+    div
+      background-size: cover !important
+      height: 54px
+      width: 54px
+      transform: scale(1.02)
+      border-radius: 54px
+  .chatText
+    p
+      margin-bottom: 6px
+    a
+      display: inline-block
+      color: #68b3dd
+      word-break: break-word;
+    span
+      display: block
+      font-family: 'Roboto', sans-serif
+      color: white
+      margin-right: 24px
+      word-break: break-word
+    .msgMedia
+      position: relative
+    img, video, iframe
+      border-radius: 8px
+      margin-top: 8px
+      border: none
+      width: 100%
+      max-width: 495px
+      object-fit: contain
+      position: relative
+      box-shadow: 2px 2px 5px rgba(0,0,0,0.3)
+      background: #000
+    .ytPreview, iframe
+      width: 495px
+      height: 279px
+    .ytPlayBtn
+      position: absolute
+      top: 0px
+      left: 0px
+      width: 495px
+      height: 279px
+      cursor: pointer
+      &:after
+        content: " "
+        z-index: 500
+        position: absolute;
+        top: calc(50% - 58px / 2)
+        left: calc(50% - 80px / 2)
+        background: url(../img/youtubeplay.png)
+        background-size: 80px 58px
+        width: 80px
+        height: 58px
+        transition: opacity 0.2s
+      &:hover
+        &:after
+          opacity: 0.85
