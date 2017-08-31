@@ -20,41 +20,18 @@ class App extends React.Component {
       images: {}
     }
   }
-  componentDidUpdate() {
-    if(this.state.client.state == 3 && this.state.cacheDir == '') {
-      client.request('servervariable virtualserver_unique_identifier')
-        .then((res)=>{
-          console.log(res.toString())
-          const cacheDir = `${require('os').homedir()}/.ts3client/cache/${btoa(client.parse(res.toString()).virtualserver_unique_identifier)}`;
-          setTimeout(()=>{
-            this.setState({ cacheDir })
-          },50)
-        })
-    }
-  }
-  setUsers(users) {
-    console.log('setusers', users)
-    this.setState({ users })
-  }
+
   componentWillMount() {
-    console.log('127.0.0.1', '25639', localStorage.getItem('ts3token'))
-    client.connect('127.0.0.1', '25639', localStorage.getItem('ts3token'))
-      .then((res)=>{
-        setTimeout(()=>{
-          console.log(res)
-          this.setState({ client: res })
-        },0)
-      })
+
   }
   render() {
-    const isStateReady = this.state.client.state == 3 && this.state.cacheDir != '';
-    console.log('stat', this.state.client.state == 3 && this.state.cacheDir != '', this.state)
+    let isStateReady = true;
     return (
       <div>
         {isStateReady ? (
           <div id="mainApp">
-            <UserSpeakStatus client={client} setUsers={this.setUsers.bind(this)}/>
-            <Chat client={client} cacheDir={this.state.cacheDir} users={this.state.users}/>
+            <UserSpeakStatus/>
+            <Chat/>
           </div>
         ) : (
           <Loader />

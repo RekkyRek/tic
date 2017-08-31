@@ -19,26 +19,6 @@ class Input extends React.Component {
       searchRes: []
     }
   }
-  escape(str) {
-    let urls = str.match(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g)
-    console.log(urls)
-    if(urls != null) {
-      urls.forEach(function(url) {
-        str = str.replace(url, `[URL]${url}[/URL]`);
-      }, this);
-    }
-    str = str.replace(/\\/g, '\\\\');
-    str = str.replace(/\//g, '\\/');
-    str = str.replace(/\|/g, '\\p');
-    str = str.replace(/\n/g, '\\n');
-    str = str.replace(/\r/g, '\\r');
-    str = str.replace(/\t/g, '\\t');
-    str = str.replace(/\v/g, '\\v');
-    str = str.replace(/\f/g, '\\f');
-    str = str.replace(/ /g, '\\s');
-
-    return str;
-  }
 
   componentWillMount() {
     var imgs = [];
@@ -85,15 +65,8 @@ class Input extends React.Component {
         return false;
       }
     }
-    if (e.keyCode == 13 && e.shiftKey == false) {
-        console.log(this.props.client)
-        const msg = `sendtextmessage targetmode=2 msg=${this.escape(input.value)}`;
-        input.value = "";
-        this.props.client.send(msg);
-        document.getElementById('chatInput').style.height="31px";
-        return false;
-    }
   }
+  
   render() {
     return (
       <div className="chatInput">
