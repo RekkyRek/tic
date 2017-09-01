@@ -2,10 +2,10 @@
 
     client.connect('127.0.0.1', '25639', localStorage.getItem('ts3token'))
         .then((res)=>{
-        setTimeout(()=>{
-            console.log(res)
-            this.setState({ client: res })
-        },0)
+            setTimeout(()=>{
+                console.log(res)
+                this.setState({ client: res })
+            },0)
         })
 
     componentDidUpdate() {

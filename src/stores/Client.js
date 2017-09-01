@@ -1,5 +1,7 @@
 import { EventEmitter } from "events"
 
+import dispatcher from '../dispatchers/dispatcher';
+
 class ClientStore extends EventEmitter {
     constructor() {
         super()
@@ -20,5 +22,6 @@ class ClientStore extends EventEmitter {
 }
 
 const ClientStore = new ClientStore
+dispatcher.register()
 
 export default ClientStore
