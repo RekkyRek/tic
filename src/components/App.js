@@ -34,11 +34,12 @@ class App extends React.Component {
     ClientActions.registerClient();
   }
   render() {
+    console.log(this.state.isStateReady)
     return (
       <div>
         {this.state.isStateReady ? (
           <div id="mainApp">
-            <UserSpeakStatus client={this.state.client}/>
+            <UserSpeakStatus client={this.state.client} store={ClientStore}/>
             <Chat/>
           </div>
         ) : (

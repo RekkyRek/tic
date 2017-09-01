@@ -12,26 +12,27 @@ class Channel extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      
     }
   }
 
   render() {
-    const whoami = {};
-    const channel = {};
+    const whoami = this.props.whoami;
+    const channel = this.props.channel;
     const users = [];
     
     //console.log('users', users)
 
     return (
       <div className="channel">
-        <div className={'channelBanner'/*channel.cid == whoami.cid ? ('channelBanner active') : ('channelBanner')>*/}>
-          <i className={'ion-chatbubble'/*channel.cid == whoami.cid ? ('ion-chatbubble-working') : ('ion-chatbubble')>*/}/>
-          <span>{/*channel.channel_name*/}</span>
+        <div className={channel.cid == whoami.cid ? ('channelBanner active') : ('channelBanner')}>
+          <i className={channel.cid == whoami.cid ? ('ion-chatbubble-working') : ('ion-chatbubble')}/>
+          <span>{channel.channel_name}</span>
         </div>
         <div className="users">
-          {/*this.props.whoami.cid == this.props.channel.cid && users.map((user) =>
+          {this.props.whoami.cid == this.props.channel.cid && users.map((user) =>
             <User key={user.clid}/>
-          )*/}
+          )}
         </div>
       </div>
     );
