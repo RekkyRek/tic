@@ -19,9 +19,13 @@ class ClientStore extends EventEmitter {
     getClient() {
         return this.client;
     }
+
+    handleActions(action) {
+        console.log('action', action);
+    }
 }
 
-const ClientStore = new ClientStore
-dispatcher.register()
+const clientStore = new ClientStore
+dispatcher.register(clientStore.handleActions.bind(clientStore))
 
-export default ClientStore
+export default clientStore
