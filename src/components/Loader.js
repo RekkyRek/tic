@@ -19,7 +19,6 @@ class Loader extends React.Component {
       <div className="loading">
         <div className="spinner">
             <i className="ion-plus-round"></i>
-            <h3>Connecting</h3>
         </div>
       </div>
     );
