@@ -27,7 +27,7 @@ class App extends React.Component {
   componentWillMount() {
     ClientStore.on('registered', ()=>{
       console.log('reg')
-      this.setState({ client: ClientStore.getClient() })
+      this.setState({ client: ClientStore.client, isStateReady: true })
       console.log(this.state);
     })
 
@@ -38,7 +38,7 @@ class App extends React.Component {
       <div>
         {this.state.isStateReady ? (
           <div id="mainApp">
-            <UserSpeakStatus/>
+            <UserSpeakStatus client={this.state.client}/>
             <Chat/>
           </div>
         ) : (

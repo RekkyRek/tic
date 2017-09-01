@@ -16,8 +16,13 @@ class ClientStore extends EventEmitter {
     reqChannels() {
         this.client.request('channellist')
             .then((res)=>{
-                this.channels = client.parse(res)
-                this.emit("registered");
+                if(this.channels == []) {
+                    this.channels = client.parse(res)
+                    this.emit("registered");
+                } else {
+                    this.channels = client.parse(res)
+                    this.emit("update");                     
+                }
             })
     }
     
@@ -25,8 +30,9 @@ class ClientStore extends EventEmitter {
         this.client.request('whoami')
             .then((res)=>{
                 this.whoami = client.parse(res);
-                setTimeout(()=>{
-                    this.reqChannels();
+                    setTimeout(()=>{
+                    if(this.channels.length == 0) {this.reqChannels()} else {this.emit("update")}
+                    this.emit("update");                 
                 }, 50)
             });
     }
@@ -36,7 +42,7 @@ class ClientStore extends EventEmitter {
             .then((res)=>{
                 this.client = res;
                 setTimeout(()=>{
-                    this.reqWhoami();
+                    this.reqWhoami();             
                 }, 50)
             })
     }
@@ -53,7 +59,6 @@ class ClientStore extends EventEmitter {
 const clientStore = new ClientStore
 dispatcher.register(clientStore.handleAction.bind(clientStore))
 
-window.getClient = clientStore.getClient.bind(clientStore);
 window.clientStore = clientStore;
 
 export default clientStore
