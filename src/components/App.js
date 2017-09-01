@@ -17,7 +17,7 @@ class App extends React.Component {
     super(props);
     this.state = {
       isStateReady: false,
-      client: { state: 0 },
+      client: {},
       cacheDir: '',
       users: [],
       images: {}

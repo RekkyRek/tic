@@ -9,18 +9,33 @@ class ClientStore extends EventEmitter {
     constructor() {
         super()
         this.client = {};
+        this.whoami = {};
+    }
+
+    reqWhoami() {
+        this.client.request('whoami')
+            .then((res)=>{
+                this.whoami = client.parse(res.toString());
+                this.emit("registered");
+            });
     }
 
     registerClient() {
         client.connect('127.0.0.1', '25639', localStorage.getItem('ts3token'))
             .then((res)=>{
                 this.client = res;
-                this.emit("registered");
+                setTimeout(()=>{
+                    this.reqWhoami();
+                }, 50)
             })
     }
 
     getClient() {
         return this.client;
+    }
+
+    getWhoami() {
+        return this.whoami;
     }
     
     handleAction(action) {
@@ -36,5 +51,6 @@ const clientStore = new ClientStore
 dispatcher.register(clientStore.handleAction.bind(clientStore))
 
 window.getClient = clientStore.getClient.bind(clientStore);
+window.getWhoami = clientStore.getWhoami.bind(clientStore);
 
 export default clientStore
