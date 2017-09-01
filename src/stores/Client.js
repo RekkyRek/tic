@@ -11,13 +11,16 @@ class ClientStore extends EventEmitter {
         this.client = {};
         this.whoami = {};
         this.channels = [];
+        this.ready = false;
     }
 
     reqChannels() {
         this.client.request('channellist')
             .then((res)=>{
-                if(this.channels == []) {
+                console.log(this.channels)
+                if(!this.ready) {
                     this.channels = client.parse(res)
+                    this.ready = true;
                     this.emit("registered");
                 } else {
                     this.channels = client.parse(res)
@@ -30,8 +33,8 @@ class ClientStore extends EventEmitter {
         this.client.request('whoami')
             .then((res)=>{
                 this.whoami = client.parse(res);
-                    setTimeout(()=>{
-                    if(this.channels.length == 0) {this.reqChannels()} else {this.emit("update")}
+                setTimeout(()=>{
+                    if(!this.ready) {this.reqChannels()} else {this.emit("update")}
                     this.emit("update");                 
                 }, 50)
             });

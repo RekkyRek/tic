@@ -64,12 +64,12 @@
         .then((res)=>{
             console.log('usersGet', Array.isArray(this.props.client.parse(res)))
             if(Array.isArray(this.props.client.parse(res))) {
-            this.setState({ users: this.props.client.parse(res) })
-            this.props.setUsers(this.props.client.parse(res))
+                this.setState({ users: this.props.client.parse(res) })
+                this.props.setUsers(this.props.client.parse(res))
             } else {
-            console.log('usersOne',  [...[this.props.client.parse(res)]])
-            this.setState({ users: [...[this.props.client.parse(res)]] })
-            this.props.setUsers([...[this.props.client.parse(res)]])
+                console.log('usersOne',  [...[this.props.client.parse(res)]])
+                this.setState({ users: [...[this.props.client.parse(res)]] })
+                this.props.setUsers([...[this.props.client.parse(res)]])
             }
             console.log(this.state)
             this.mountListeners();
