@@ -23,6 +23,13 @@ class ChatLog extends React.Component {
       }
   }
 
+  componentWillMount() {
+    const store = this.props.store;
+    store.on('update', ()=>{
+      this.setState({ messages: store.messages })
+    })
+  }
+
   componentDidMount() {
     this.scrollBottom()
   }
@@ -48,9 +55,9 @@ class ChatLog extends React.Component {
       
       return (
         <div className="chatLog">
-            {/*this.state.messages.map((msg) =>
+            {this.state.messages.map((msg) =>
               <Message key={`${msg.msg.substr(8)}_${msg.time}`} msg={msg} user={this.getUser(users, msg.invokeruid)} cacheDir={this.props.cacheDir}/>
-            )*/}
+            )}
         </div>
       );
     }

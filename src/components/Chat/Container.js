@@ -18,8 +18,8 @@ class Chat extends React.Component {
   render() {
     return (
       <div className="chat">
-        <ChatLog/>
-        <Input/>
+        <ChatLog store={this.props.store}/>
+        <Input client={this.props.client}/>
       </div>
     );
   }

@@ -43,7 +43,6 @@ class Input extends React.Component {
     if(word.indexOf(':') > -1 && word.length > 1) {
       word = word.split(':').pop();
       isEmoji = true;
-      console.log(emoji.search(word).splice(0, 5))
       this.setState({searchRes: emoji.search(word).splice(0, 5)})
       } else {
       this.setState({searchRes: []})
@@ -51,8 +50,7 @@ class Input extends React.Component {
     autosize(input)
 
     this.setState({ text: input.value, sel: input.selectionStart });
-    console.log(e.shiftKey)
-    console.log(e.keyCode)
+
     if (e.keyCode == 38) {
       if(isEmoji) {
         e.preventDefault()
@@ -62,16 +60,16 @@ class Input extends React.Component {
     } else if(e.keyCode == 40) {
       if(isEmoji) {
         e.preventDefault()
-        console.log(this.refs)
         this.refs.sel.down();
         return false;
       }
     } else if (e.keyCode == 13 && e.shiftKey == false) {
-      console.log(this.props.client)
       const msg = `sendtextmessage targetmode=2 msg=${Helpers.escape(input.value)}`;
       input.value = "";
       this.props.client.send(msg);
       document.getElementById('chatInput').style.height="31px";
+      e.preventDefault()
+      input.value = "";
       return false;
     }
   }

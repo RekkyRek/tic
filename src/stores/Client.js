@@ -12,6 +12,7 @@ class ClientStore extends EventEmitter {
         this.whoami = {};
         this.channels = [];
         this.users = [];
+        this.messages = [];
         this.ready = false;
     }
    
