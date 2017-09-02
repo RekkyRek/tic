@@ -6,3 +6,10 @@ export function registerClient () {
     })
 };
 
+export function getUsers (cid) {
+    dispatcher.dispatch({
+        type: 'FETCH_USERS',
+        cid
+    })
+};
+

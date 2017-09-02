@@ -11,7 +11,20 @@ class ClientStore extends EventEmitter {
         this.client = {};
         this.whoami = {};
         this.channels = [];
+        this.users = [];
         this.ready = false;
+    }
+
+    reqUsers(cid) {
+        this.client.request(`channelclientlist cid=${cid} -voice -uid`)
+            .then((res)=>{
+                if(Array.isArray(this.client.parse(res))) {
+                    this.users = this.client.parse(res);
+                } else {
+                    this.users = [...[this.client.parse(res)]];
+                }
+                this.emit("update");                     
+            })
     }
 
     reqChannels() {
@@ -54,6 +67,9 @@ class ClientStore extends EventEmitter {
         switch(action.type) {
             case "REGISTER_CLIENT":
                 this.registerClient();
+                break;
+            case "FETCH_USERS":
+                this.reqUsers(action.cid);
                 break;
         }
     }

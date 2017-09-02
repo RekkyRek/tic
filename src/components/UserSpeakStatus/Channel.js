@@ -3,6 +3,8 @@ import React, { Component } from 'react';
 
 import User from './User';
 
+import * as ClientActions from '../actions/Client';
+
 String.prototype.replaceAll = function(search, replacement) {
   var target = this;
   return target.replace(new RegExp(search, 'g'), replacement);
@@ -14,6 +16,14 @@ class Channel extends React.Component {
     this.state = {
       
     }
+  }
+
+  componentWillMount() {
+    
+  }
+
+  componentWillUnmount() {
+    
   }
 
   render() {
