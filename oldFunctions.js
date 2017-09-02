@@ -46,7 +46,7 @@
 
     componentWillMount() {
         if(this.props.channel.cid == this.props.whoami.cid) {
-        this.mountListeners();
+            this.mountListeners();
         }
     }
 

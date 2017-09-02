@@ -2,6 +2,7 @@ import '../../assets/css/SpeakStatus/Container.sass';
 import React, { Component } from 'react';
 
 import Channel from './Channel';
+import * as ClientActions from '../../actions/Client';
 
 String.prototype.replaceAll = function(search, replacement) {
     var target = this;
@@ -13,18 +14,30 @@ class Container extends React.Component {
     super(props);
     this.state = {
       colSize: 250,
-      channels: []
+      channels: [],
+      users: []
     }
+  }
+
+  handleUpdate() {
+    this.setState({ channels: store.channels, whoami: store.whoami, users: store.users })
+    console.log(this.state)
   }
 
   componentWillMount() {
     const store = this.props.store;
-    this.setState({ channels: store.channels, whoami: store.whoami })
+    this.setState({ channels: store.channels, whoami: store.whoami, users: store.users })
 
-    store.on('update', ()=>{
-      this.setState({ channels: store.channels, whoami: store.whoami })
-      console.log(this.state)
-    })
+    store.on('update', this.handleUpdate.bind(this))
+
+    setTimeout(()=>{
+      ClientActions.getUsers(this.state.whoami.cid)    
+    }, 1000);
+  }
+
+  componentWillUnmount() {
+    const store = this.props.store;
+    //store.removeEventListener('update', this.handleUpdate.bind(this));
   }
 
   resize(e) {
@@ -44,7 +57,7 @@ class Container extends React.Component {
       <div onMouseUp={this.stopResize.bind(this)}>
         <ul className="channels" style={{ width: this.state.colSize }}>
           {this.state.channels.map((channel) =>
-            <Channel key={channel.cid} channel={channel} whoami={this.state.whoami} />
+            <Channel key={channel.cid} channel={channel} whoami={this.state.whoami} users={this.state.users} />
           )}
           <div id="ghostbar" onMouseDown={this.startResize.bind(this)}></div>
         </ul>

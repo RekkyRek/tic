@@ -20,10 +20,13 @@ class ClientStore extends EventEmitter {
             .then((res)=>{
                 if(Array.isArray(this.client.parse(res))) {
                     this.users = this.client.parse(res);
+                    console.log(this.users)
+                    this.emit("update");                     
                 } else {
                     this.users = [...[this.client.parse(res)]];
+                    console.log(this.users)
+                    this.emit("update");                     
                 }
-                this.emit("update");                     
             })
     }
 
