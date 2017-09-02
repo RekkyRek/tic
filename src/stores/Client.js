@@ -89,6 +89,9 @@ class ClientStore extends EventEmitter {
             case "FETCH_USERS":
                 this.reqUsers(action.cid);
                 break;
+            case "FETCH_WHOAMI":
+                this.reqWhoami();
+                break;
         }
     }
 }

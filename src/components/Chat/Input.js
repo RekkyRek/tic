@@ -64,6 +64,13 @@ class Input extends React.Component {
         this.refs.sel.down();
         return false;
       }
+    } else if (e.keyCode == 13 && e.shiftKey == false) {
+      console.log(this.props.client)
+      const msg = `sendtextmessage targetmode=2 msg=${this.escape(input.value)}`;
+      input.value = "";
+      this.props.client.send(msg);
+      document.getElementById('chatInput').style.height="31px";
+      return false;
     }
   }
   

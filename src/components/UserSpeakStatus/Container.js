@@ -15,13 +15,20 @@ class Container extends React.Component {
     this.state = {
       colSize: 250,
       channels: [],
-      users: []
+      users: [],
+      whoami: {}
     }
   }
 
   handleUpdate() {
     const s = this.props.store;    
     this.setState({ channels: s.channels, whoami: s.whoami, users: s.users })
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if(prevState.whoami.cid != this.state.whoami.cid) {
+      ClientActions.getUsers(this.state.whoami.cid)
+    }
   }
 
   componentWillMount() {
@@ -31,8 +38,21 @@ class Container extends React.Component {
     store.on('update', this.handleUpdate.bind(this))
 
     setTimeout(()=>{
-      ClientActions.getUsers(this.state.whoami.cid)    
+      ClientActions.getUsers(this.state.whoami.cid)
     }, 75);
+
+    const client = this.props.client;
+
+    setTimeout(()=>{
+      client.notifyOn('notifyclientupdated', 'schandlerid=1', ()=>{
+        console.log('update')
+        ClientActions.getUsers(this.state.whoami.cid);
+      })
+      client.notifyOn('notifyclientmoved', 'schandlerid=1', ()=>{
+        console.log('update')
+        ClientActions.getWhoami();
+      })
+    }, 200);
   }
 
   componentWillUnmount() {

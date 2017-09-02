@@ -2,6 +2,7 @@ import '../../assets/css/SpeakStatus/Channel.sass';
 import React, { Component } from 'react';
 
 import User from './User';
+import * as ClientActions from '../../actions/Client';
 
 String.prototype.replaceAll = function(search, replacement) {
   var target = this;
@@ -17,7 +18,7 @@ class Channel extends React.Component {
   }
 
   componentWillMount() {
-    
+
   }
 
   componentWillUnmount() {
