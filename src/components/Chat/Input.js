@@ -5,6 +5,8 @@ import Twemoji from 'react-twemoji';
 import twemoji from 'twemoji';
 import emoji from 'node-emoji';
 
+import * as Helpers from '../Utils/Helpers';
+
 import Selector from './Selector';
 
 class Input extends React.Component {
@@ -66,7 +68,7 @@ class Input extends React.Component {
       }
     } else if (e.keyCode == 13 && e.shiftKey == false) {
       console.log(this.props.client)
-      const msg = `sendtextmessage targetmode=2 msg=${this.escape(input.value)}`;
+      const msg = `sendtextmessage targetmode=2 msg=${Helpers.escape(input.value)}`;
       input.value = "";
       this.props.client.send(msg);
       document.getElementById('chatInput').style.height="31px";

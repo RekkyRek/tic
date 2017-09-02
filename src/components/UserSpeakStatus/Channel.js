@@ -17,12 +17,8 @@ class Channel extends React.Component {
     }
   }
 
-  componentWillMount() {
-
-  }
-
-  componentWillUnmount() {
-    
+  switchTo() {
+    this.props.client.send(`clientmove cid=${this.props.channel.cid} clid=${this.props.whoami.clid}`)
   }
 
   render() {
@@ -31,7 +27,7 @@ class Channel extends React.Component {
     const users = this.props.users;
     
     return (
-      <div className="channel">
+      <div className="channel" onClick={this.switchTo.bind(this)}>
         <div className={channel.cid == whoami.cid ? ('channelBanner active') : ('channelBanner')}>
           <i className={channel.cid == whoami.cid ? ('ion-chatbubble-working') : ('ion-chatbubble')}/>
           <span>{channel.channel_name}</span>

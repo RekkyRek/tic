@@ -2,6 +2,7 @@ import '../../assets/css/Chat/Message.sass';
 import React, { Component } from 'react';
 import twemoji from 'twemoji';
 import emoji from 'node-emoji';
+import * as Helpers from '../Utils/Helpers';
 
 const ord = require('/media/hampus/Anis/phpord');
 const fs = require('fs');
@@ -34,7 +35,7 @@ class Message extends React.Component {
   }
 
   componentWillMount() {
-    let unesc = this.unescape(this.props.msg.msg);
+    let unesc = Helpers.unescape(this.props.msg.msg);
     unesc = emoji.emojify(unesc);
     unesc = twemoji.parse(unesc);
     this.setState({ innerHTML: unesc })

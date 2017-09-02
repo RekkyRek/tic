@@ -77,7 +77,7 @@ class Container extends React.Component {
       <div onMouseUp={this.stopResize.bind(this)}>
         <ul className="channels" style={{ width: this.state.colSize }}>
           {this.state.channels.map((channel) =>
-            <Channel key={channel.cid} channel={channel} whoami={this.state.whoami} users={this.state.users} />
+            <Channel key={channel.cid} client={this.props.client} channel={channel} whoami={this.state.whoami} users={this.state.users} />
           )}
           <div id="ghostbar" onMouseDown={this.startResize.bind(this)}></div>
         </ul>
