@@ -27,10 +27,8 @@ class Channel extends React.Component {
   render() {
     const whoami = this.props.whoami;
     const channel = this.props.channel;
-    const users = [];
+    const users = this.props.users;
     
-    //console.log('users', users)
-
     return (
       <div className="channel">
         <div className={channel.cid == whoami.cid ? ('channelBanner active') : ('channelBanner')}>
@@ -39,7 +37,7 @@ class Channel extends React.Component {
         </div>
         <div className="users">
           {this.props.whoami.cid == this.props.channel.cid && users.map((user) =>
-            <User key={user.clid}/>
+            <User key={user.clid} user={user} whoami={whoami}/>
           )}
         </div>
       </div>

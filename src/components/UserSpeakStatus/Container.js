@@ -20,8 +20,8 @@ class Container extends React.Component {
   }
 
   handleUpdate() {
-    this.setState({ channels: store.channels, whoami: store.whoami, users: store.users })
-    console.log(this.state)
+    const s = this.props.store;    
+    this.setState({ channels: s.channels, whoami: s.whoami, users: s.users })
   }
 
   componentWillMount() {
@@ -32,12 +32,12 @@ class Container extends React.Component {
 
     setTimeout(()=>{
       ClientActions.getUsers(this.state.whoami.cid)    
-    }, 1000);
+    }, 75);
   }
 
   componentWillUnmount() {
     const store = this.props.store;
-    //store.removeEventListener('update', this.handleUpdate.bind(this));
+    store.removeListener('update', this.handleUpdate.bind(this));
   }
 
   resize(e) {

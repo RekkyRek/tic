@@ -24,23 +24,29 @@ class App extends React.Component {
     }
   }
 
-  componentWillMount() {
-    ClientStore.on('registered', ()=>{
-      console.log('reg')
-      this.setState({ client: ClientStore.client, isStateReady: true })
-      console.log(this.state);
-    })
+  handleEvent() {
+    console.log('reg');
+    this.setState({ client: ClientStore.client, isStateReady: true });
+    console.log(this.state);
+  }
 
+  componentWillMount() {
+    ClientStore.on('registered', this.handleEvent.bind(this))
     ClientActions.registerClient();
   }
+
+  componentWillUnmount() {
+    ClientStore.removeListener('registered', this.handleEvent.bind(this))
+    
+  }
   render() {
-    console.log(this.state.isStateReady)
+    console.log('ready: ',this.state.isStateReady)
     return (
       <div>
         {this.state.isStateReady ? (
           <div id="mainApp">
             <UserSpeakStatus client={this.state.client} store={ClientStore}/>
-            <Chat/>
+            <Chat client={this.state.client} store={ClientStore}/>
           </div>
         ) : (
           <Loader />
