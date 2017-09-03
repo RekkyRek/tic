@@ -12,7 +12,7 @@ class ClientStore extends EventEmitter {
         this.whoami = {};
         this.channels = [];
         this.users = [];
-        this.messages = [];
+        this.messages = {};
         this.ready = false;
     }
    
@@ -57,7 +57,13 @@ class ClientStore extends EventEmitter {
                 }
             })
     }
-    
+
+    putMessages(cid, message) {
+        this.messages[cid].push(message);
+        localStorage.setItem('messages', this.messages);
+        this.emit("update");                     
+    }
+
     reqWhoami() {
         this.client.request('whoami')
             .then((res)=>{
@@ -92,6 +98,9 @@ class ClientStore extends EventEmitter {
                 break;
             case "FETCH_WHOAMI":
                 this.reqWhoami();
+                break;
+            case "SAVE_MESSAGES":
+                this.putMessages(action.cid, action.message);
                 break;
         }
     }

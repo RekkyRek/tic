@@ -1,6 +1,7 @@
 import '../../assets/css/Chat/ChatLog.sass';
 import React, { Component } from 'react';
 
+import * as ClientActions from '../../actions/Client';
 import Message from './Message';
 
 class ChatLog extends React.Component {
@@ -10,7 +11,6 @@ class ChatLog extends React.Component {
       messages: []
     }
   }
-
 
   scrollBottom() {
       let cl = document.getElementsByClassName('chatLog')[0];
@@ -25,9 +25,24 @@ class ChatLog extends React.Component {
 
   componentWillMount() {
     const store = this.props.store;
+    const client = this.props.client;
     store.on('update', ()=>{
-      this.setState({ messages: store.messages })
+      this.setState({ messages: store.messages[store.whoami.cid] })
     })
+
+    let reso = (res) => {
+      let msg = this.props.client.parse(res.toString());
+      console.log(msg)
+    };
+
+    this.props.client.notifyOn('notifytextmessage', 'schandlerid=1', reso.bind(this));
+    window.ts3 = this.props.client;
+    console.log(window)
+  }
+
+  componentWillUnmount() {
+    const client = this.props.client;
+    client.notifyOff('notifytextmessage', 'schandler=1');
   }
 
   componentDidMount() {
@@ -55,9 +70,9 @@ class ChatLog extends React.Component {
       
       return (
         <div className="chatLog">
-            {this.state.messages.map((msg) =>
+            {/*this.state.messages.map((msg) =>
               <Message key={`${msg.msg.substr(8)}_${msg.time}`} msg={msg} user={this.getUser(users, msg.invokeruid)} cacheDir={this.props.cacheDir}/>
-            )}
+            )*/}
         </div>
       );
     }

@@ -24,3 +24,10 @@ export function getUsers (cid) {
         cid
     })
 };
+
+export function putMessages (cid, message) {
+    dispatcher.dispatch({
+        type: 'SAVE_MESSAGES',
+        message
+    })
+};
