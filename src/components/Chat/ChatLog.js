@@ -8,7 +8,10 @@ class ChatLog extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      messages: []
+      messages: [],
+      users: [],
+      cacheDir: undefined,
+      cid: 0,
     }
   }
 
@@ -23,16 +26,22 @@ class ChatLog extends React.Component {
       }
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    //console.log(nextProps, nextState, this.props, this.state)
+    //console.log(nextState.messages != this.state.messages || nextProps != this.props)
+    return true;
+  }
+
   componentWillMount() {
     const store = this.props.store;
     const client = this.props.client;
     store.on('update', ()=>{
-      this.setState({ messages: store.messages[store.whoami.cid] })
+      this.setState({ cid: store.whoami.cid, messages: store.messages[store.whoami.cid], cacheDir: store.cacheDir, users: store.users })
     })
 
     let reso = (res) => {
       let msg = this.props.client.parse(res.toString());
-      console.log(msg)
+      ClientActions.putMessages(this.state.cid, msg)
     };
 
     this.props.client.notifyOn('notifytextmessage', 'schandlerid=1', reso.bind(this));
@@ -49,9 +58,26 @@ class ChatLog extends React.Component {
     this.scrollBottom()
   }
 
+  getUser(users, uid) {
+    let retur = null;
+    users.forEach(function(user) {
+      if(user.client_unique_identifier == uid) {
+        //console.log('user', user)
+        retur = user;
+      }
+    }, this);
+    return retur;
+  }
+
   render() {
-    console.time('render')
-    if(0 > 0) {
+    //console.time('render')
+    
+    if(this.state.cacheDir == undefined) {
+      ClientActions.updateCache();
+      return (<div className="chatLog"/>);
+    }
+
+    if(this.state.messages && this.state.users && this.state.messages.length > 0 && this.state.users.length > 0) {
       let cl = document.getElementsByClassName('chatLog')[0]
       let lms = document.getElementsByClassName('chatMessage');
       if(cl != undefined && lms.length > 0) {
@@ -67,16 +93,19 @@ class ChatLog extends React.Component {
           cl.scrollTop = cl.clientHeight + cl.scrollHeight;
         }, 50);
       }
-      
+
+      //console.log('chat lol', this.state.messages)
+
       return (
         <div className="chatLog">
-            {/*this.state.messages.map((msg) =>
-              <Message key={`${msg.msg.substr(8)}_${msg.time}`} msg={msg} user={this.getUser(users, msg.invokeruid)} cacheDir={this.props.cacheDir}/>
-            )*/}
+            {this.state.messages.map((msg) =>
+              <Message key={`${msg.msg.substr(0,8)}_${msg.time}`} msg={msg} user={this.getUser(this.state.users, msg.invokeruid)} cacheDir={this.state.cacheDir}/>
+            )}
         </div>
       );
     }
-    return(<div className="chatLog"/>);
+    
+    return (<div className="chatLog"/>);
   }
 }
 

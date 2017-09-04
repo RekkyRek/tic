@@ -41,18 +41,17 @@ class Message extends React.Component {
     this.setState({ innerHTML: unesc })
   }
 
+  shouldComponentUpdate(nprop, nstate) {
+    return nstate != this.state;
+  }
+
   render() {
     let impath;
+    console.log('props', this.props)
     if(this.props.user != undefined) {
       impath = `${this.props.cacheDir}/clients/avatar_${this.ts3_base16(this.props.user.client_unique_identifier)}`;
-      if(!fs.existsSync(impath)) {
-        impath = "";
-      } else if(this.state.impath == ''){
-        fs.readFile(impath, (err, data) => {
-          if (err) throw err;
-          this.setState({ impath: `data:${mime.lookup(impath)};base64,${data.toString('base64')}` })
-        });
-      }
+      console.log(impath)
+      
     } else {
       impath = '';
     }

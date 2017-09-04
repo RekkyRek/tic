@@ -28,6 +28,21 @@ export function getUsers (cid) {
 export function putMessages (cid, message) {
     dispatcher.dispatch({
         type: 'SAVE_MESSAGES',
+        cid,
         message
+    })
+};
+
+export function updateCache () {
+    dispatcher.dispatch({
+        type: 'FETCH_CACHEDIR'
+    })
+};
+
+export function putUserImg (uid, path) {
+    dispatcher.dispatch({
+        type: 'SAVE_USERIMG',
+        uid,
+        path
     })
 };

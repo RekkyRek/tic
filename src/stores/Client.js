@@ -13,7 +13,26 @@ class ClientStore extends EventEmitter {
         this.channels = [];
         this.users = [];
         this.messages = {};
+        this.userImages = {};
+        this.cacheDir = localStorage.getItem('ts3cache');
         this.ready = false;
+
+        if(localStorage.getItem('messages') != undefined) {
+            this.messages = JSON.parse(localStorage.getItem('messages'));
+            this.emit("update");
+        }
+    }
+
+    putImage(uid,path) {
+        if(!fs.existsSync(impath)) {
+            impath = "";
+        } else if(this.state.impath == ''){
+            fs.readFile(impath, (err, data) => {
+                if (err) throw err;
+                this.userImages[uid] = `data:${mime.lookup(impath)};base64,${data.toString('base64')}`;
+                this.emit("update");
+            });
+        }
     }
    
     reqUsers(cid) {
@@ -43,6 +62,18 @@ class ClientStore extends EventEmitter {
             })
     }
 
+    ts3Cache() {
+        this.client.request('servervariable virtualserver_unique_identifier')
+            .then((res)=>{
+                console.log('cache',res.toString(), res.toString().split('\n\r')[1], this.client.parse(res.toString()));
+                const vuid = res.toString().split('\n\r')[1];
+                console.log('vuid',vuid.substr(vuid.indexOf('=')+1))
+                this.cacheDir = `${require('os').homedir()}/.ts3client/cache/${btoa(vuid.substr(vuid.indexOf('=')+1))}`;
+                localStorage.setItem('ts3cache', this.cacheDir);
+                this.emit("update");
+            })
+    }
+
     reqChannels() {
         this.client.request('channellist')
             .then((res)=>{
@@ -59,8 +90,10 @@ class ClientStore extends EventEmitter {
     }
 
     putMessages(cid, message) {
+        if(this.messages[cid] == undefined) {this.messages[cid] = [];}
+        message.time = Date.now();
         this.messages[cid].push(message);
-        localStorage.setItem('messages', this.messages);
+        localStorage.setItem('messages', JSON.stringify(this.messages));
         this.emit("update");                     
     }
 
@@ -101,6 +134,12 @@ class ClientStore extends EventEmitter {
                 break;
             case "SAVE_MESSAGES":
                 this.putMessages(action.cid, action.message);
+                break;
+            case "FETCH_CACHEDIR":
+                this.ts3Cache();
+                break;
+            case "SAVE_USERIMG":
+                this.putImage(action.uid, action.path);
                 break;
         }
     }
