@@ -25,7 +25,7 @@ class ClientStore extends EventEmitter {
 
     putImage(uid,path) {
         if(!fs.existsSync(impath)) {
-            impath = "";
+            this.userImages[uid] = "";
         } else if(this.state.impath == ''){
             fs.readFile(impath, (err, data) => {
                 if (err) throw err;
