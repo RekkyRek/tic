@@ -1,3 +1,5 @@
+const ord = require('/media/hampus/Anis/phpord');
+
 export function escape(str) {
     let urls = str.match(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g)
     console.log(urls)
@@ -17,6 +19,18 @@ export function escape(str) {
     str = str.replace(/ /g, '\\s');
 
     return str;
+}
+
+export function ts3_base16(stri) {
+    var str = require('atob')(stri);
+    var convert = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p'];
+    var ret = '';
+    for (var i = 0; i < 20; i++) {
+        var ch = ord(str.charAt(i));
+        ret += convert[(ch & 0xF0) >> 4];
+        ret += convert[ch & 0x0F];
+    }
+    return ret;
 }
 
 export function unescape(s){

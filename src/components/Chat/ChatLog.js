@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 
 import * as ClientActions from '../../actions/Client';
 import Message from './Message';
+import * as Helpers from '../Utils/Helpers';
 
 class ChatLog extends React.Component {
   constructor(props) {
@@ -10,6 +11,7 @@ class ChatLog extends React.Component {
     this.state = {
       messages: [],
       users: [],
+      avatars: {},
       cacheDir: undefined,
       cid: 0,
     }
@@ -36,7 +38,13 @@ class ChatLog extends React.Component {
     const store = this.props.store;
     const client = this.props.client;
     store.on('update', ()=>{
-      this.setState({ cid: store.whoami.cid, messages: store.messages[store.whoami.cid], cacheDir: store.cacheDir, users: store.users })
+      this.setState({
+        cid: store.whoami.cid,
+        messages: store.messages[store.whoami.cid],
+        cacheDir: store.cacheDir,
+        users: store.users
+      })
+      //console.log(this.state)
     })
 
     let reso = (res) => {
@@ -62,7 +70,6 @@ class ChatLog extends React.Component {
     let retur = null;
     users.forEach(function(user) {
       if(user.client_unique_identifier == uid) {
-        //console.log('user', user)
         retur = user;
       }
     }, this);

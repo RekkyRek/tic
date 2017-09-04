@@ -38,11 +38,3 @@ export function updateCache () {
         type: 'FETCH_CACHEDIR'
     })
 };
-
-export function putUserImg (uid, path) {
-    dispatcher.dispatch({
-        type: 'SAVE_USERIMG',
-        uid,
-        path
-    })
-};

@@ -5,6 +5,11 @@ import dispatcher from '../dispatchers/dispatcher'
 import ts3client from '/media/hampus/Anis/ts3-clientquery/'
 const client = ts3client.newQuery()
 
+import * as Helpers from '../components/Utils/Helpers';
+
+const fs = require('fs');
+const mime = require('mime');
+
 class ClientStore extends EventEmitter {
     constructor() {
         super()
@@ -13,7 +18,6 @@ class ClientStore extends EventEmitter {
         this.channels = [];
         this.users = [];
         this.messages = {};
-        this.userImages = {};
         this.cacheDir = localStorage.getItem('ts3cache');
         this.ready = false;
 
@@ -23,18 +27,6 @@ class ClientStore extends EventEmitter {
         }
     }
 
-    putImage(uid,path) {
-        if(!fs.existsSync(impath)) {
-            this.userImages[uid] = "";
-        } else if(this.state.impath == ''){
-            fs.readFile(impath, (err, data) => {
-                if (err) throw err;
-                this.userImages[uid] = `data:${mime.lookup(impath)};base64,${data.toString('base64')}`;
-                this.emit("update");
-            });
-        }
-    }
-   
     reqUsers(cid) {
         this.client.request(`channelclientlist cid=${cid} -voice -uid`)
             .then((res)=>{
@@ -139,7 +131,7 @@ class ClientStore extends EventEmitter {
                 this.ts3Cache();
                 break;
             case "SAVE_USERIMG":
-                this.putImage(action.uid, action.path);
+                this.buildUsers(action.user);
                 break;
         }
     }
