@@ -2,6 +2,8 @@ import '../../assets/css/SpeakStatus/Container.sass';
 import React, { Component } from 'react';
 
 import Channel from './Channel';
+import BottomBar from './BottomBar';
+
 import * as ClientActions from '../../actions/Client';
 
 String.prototype.replaceAll = function(search, replacement) {
@@ -74,13 +76,14 @@ class Container extends React.Component {
   }
   render() {
     return (
-      <div onMouseUp={this.stopResize.bind(this)}>
+      <div className="sidebar" onMouseUp={this.stopResize.bind(this)}>
         <ul className="channels" style={{ width: this.state.colSize }}>
           {this.state.channels.map((channel) =>
             <Channel key={channel.cid} client={this.props.client} channel={channel} whoami={this.state.whoami} users={this.state.users} />
           )}
           <div id="ghostbar" onMouseDown={this.startResize.bind(this)}></div>
         </ul>
+        <BottomBar store={this.props.store} style={{ width: this.state.colSize }}/>
       </div>
     );
   }

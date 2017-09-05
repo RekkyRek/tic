@@ -77,7 +77,7 @@ class ChatLog extends React.Component {
   }
 
   render() {
-    //console.time('render')
+    console.time('render')
     
     if(this.state.cacheDir == undefined) {
       ClientActions.updateCache();
@@ -106,8 +106,9 @@ class ChatLog extends React.Component {
       return (
         <div className="chatLog">
             {this.state.messages.map((msg) =>
-              <Message key={`${msg.msg.substr(0,8)}_${msg.time}`} msg={msg} user={this.getUser(this.state.users, msg.invokeruid)} cacheDir={this.state.cacheDir}/>
+              <Message key={`${msg.time}`} msg={msg} user={this.getUser(this.state.users, msg.invokeruid)} cacheDir={this.state.cacheDir}/>
             )}
+            {console.timeEnd('render')}
         </div>
       );
     }

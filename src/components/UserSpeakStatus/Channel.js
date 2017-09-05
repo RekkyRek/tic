@@ -34,7 +34,7 @@ class Channel extends React.Component {
         </div>
         <div className="users">
           {this.props.whoami.cid == this.props.channel.cid && users.map((user) =>
-            <User key={user.clid} user={user} whoami={whoami}/>
+            <User key={user.client_unique_identifier} user={user} whoami={whoami}/>
           )}
         </div>
       </div>

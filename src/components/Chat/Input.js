@@ -64,12 +64,26 @@ class Input extends React.Component {
         return false;
       }
     } else if (e.keyCode == 13 && e.shiftKey == false) {
-      const msg = `sendtextmessage targetmode=2 msg=${Helpers.escape(input.value)}`;
-      input.value = "";
-      this.props.client.send(msg);
-      document.getElementById('chatInput').style.height="31px";
+      if(this.state.searchRes.length > 0) {
+        let word = input.value.substring(0,input.selectionEnd);
+        let selemoj = this.state.searchRes[this.refs.sel.state.selected];
+        let begin = word.lastIndexOf(':');
+        let end = begin + `:${selemoj.key}:`.length;
+        console.log(input.selectionEnd)
+        let newstr = input.value.substring(0, begin) + `:${selemoj.key}:` + input.value.substring(input.selectionEnd, 1024)
+        input.value = newstr;
+        console.log(word, begin, newstr)
+
+        input.setSelectionRange(end,end);
+
+      } else {
+        const msg = `sendtextmessage targetmode=2 msg=${Helpers.escape(input.value)}`;
+        input.value = "";
+        this.props.client.send(msg);
+        document.getElementById('chatInput').style.height="31px";
+        input.value = "";
+      }
       e.preventDefault()
-      input.value = "";
       return false;
     }
   }
