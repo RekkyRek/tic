@@ -28,11 +28,11 @@ class ChatLog extends React.Component {
       }
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
+  //shouldComponentUpdate(nextProps, nextState) {
     //console.log(nextProps, nextState, this.props, this.state)
     //console.log(nextState.messages != this.state.messages || nextProps != this.props)
-    return true;
-  }
+    //return true;
+  //}
 
   componentWillMount() {
     const store = this.props.store;
@@ -76,9 +76,7 @@ class ChatLog extends React.Component {
     return retur;
   }
 
-  render() {
-    console.time('render')
-    
+  render() {    
     if(this.state.cacheDir == undefined) {
       ClientActions.updateCache();
       return (<div className="chatLog"/>);
@@ -108,7 +106,6 @@ class ChatLog extends React.Component {
             {this.state.messages.map((msg) =>
               <Message key={`${msg.time}`} msg={msg} user={this.getUser(this.state.users, msg.invokeruid)} cacheDir={this.state.cacheDir}/>
             )}
-            {console.timeEnd('render')}
         </div>
       );
     }

@@ -1,6 +1,8 @@
 import React from 'react';
 import { render } from 'react-dom';
 
+// import './ReactotronConfig';
+
 import Setup from './components/Setup';
 
 import './assets/css/App.sass';

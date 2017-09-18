@@ -16,6 +16,7 @@ class Message extends React.Component {
       msgImage: '',
       msgVideo: '',
       msgYoutube: '',
+      imbak: '',
       loaded: false,
       shouldLoad: false,
     }
@@ -39,9 +40,10 @@ class Message extends React.Component {
         r = r.replace(url, `<a alt="${url.substring(5, urll)}" href="${url.substring(5, urll)}">${url.substring(5, urll)}</a>`);
 
         let images = ['png', 'jpg', 'peg', 'gif'];
-        if(images.indexOf(url.substring(url.length-9, urll).toLowerCase()) > -1 && this.state.msgImage == '') {
-        this.setState({ msgImage: url.substring(5, urll) });
-        return;
+        let isurl = url.split("?")[0].substring(5, urll);
+        if(images.indexOf(isurl.substring(isurl.length-3, isurl.length).toLowerCase()) > -1 && this.state.msgImage == '') {
+          this.setState({ msgImage: url.substring(5, urll) });
+          return;
         }
         let videos = ['mp4', 'ifv', 'ebm'];
         if(videos.indexOf(url.substring(url.length-9, urll).toLowerCase()) > -1 && this.state.msgVideo == '') {
@@ -88,13 +90,15 @@ class Message extends React.Component {
 
     let impath = `${this.props.cacheDir}/clients/avatar_${Helpers.ts3_base16(this.props.msg.invokeruid)}`;
 
+    let imseed = Math.floor(Math.random() * 360)
+    let imbak = `linear-gradient(19deg, hsl(${imseed}, 98%, 56%) 0%, hsl(${imseed+15}, 100%, 56%) 100%)`
     if(!fs.existsSync(impath)) {
       impath = "";
-      this.setState({ innerHTML: unesc })
+      this.setState({ innerHTML: unesc, imbak: imbak })
       } else if(this.state.impath == ''){
       fs.readFile(impath, (err, data) => {
         if (err) throw err;
-        this.setState({ innerHTML: unesc, impath: `data:${mime.lookup(impath)};base64,${data.toString('base64')}` })
+        this.setState({ innerHTML: unesc, impath: `data:${mime.lookup(impath)};base64,${data.toString('base64')}`, imbak: imbak })
       });
     }
   }
@@ -134,7 +138,7 @@ class Message extends React.Component {
 
     return (
       <div className="chatMessage">
-        <div className="chatImage">
+        <div className="chatImage" style={{ background: this.state.imbak }}>
           <div style={{ background: `url(${this.state.impath}) no-repeat center center` }}></div>
         </div>
         <div className="chatText">        

@@ -16,10 +16,9 @@ class BottomBar extends React.Component {
 
   handleUpdate() {
     const s = this.props.store;
-    console.log('cdidid', s.whoami, s.users)
     let myuser;
     s.users.forEach(function(user) {
-        if(user.clid = s.whoami.clid) {
+        if(user.clid == s.whoami.clid) {
             myuser = user;
             return;
         }
@@ -33,7 +32,7 @@ class BottomBar extends React.Component {
     let myuser;
 
     s.users.forEach(function(user) {
-        if(user.clid = s.whoami.clid) {
+        if(user.clid == s.whoami.clid) {
             myuser = user;
             return;
         }

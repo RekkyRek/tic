@@ -28,24 +28,31 @@ class ClientStore extends EventEmitter {
     }
 
     reqUsers(cid) {
+        console.log('reqUsers')
         this.client.request(`channelclientlist cid=${cid} -voice -uid`)
             .then((res)=>{
                 if(Array.isArray(this.client.parse(res))) {
-                    this.users = this.client.parse(res);
-                    console.log(this.users)
+                    let users = [];
+                    res.toString().split("|").forEach((r)=>{
+                        users.push(this.client.parse(r))
+                    })
+                    console.log('users', users)
+                    this.users = [...users];
+                    console.log('thisusers', users)
                     this.emit("update");                     
                 } else {
                     this.users = [...[this.client.parse(res)]];
-                    console.log(this.users)
+                    console.log('users',this.users)
                     this.emit("update");                     
                 }
 
                 this.client.notifyOn('notifytalkstatuschange','schandlerid=1', (res) => {
                     let udat = this.client.parse(res);
+                    console.log(this.client.parse(res))
                     let users = this.users;
                     this.users.forEach(function(user) {
                         if(user.clid == udat.clid) {
-                        users[users.indexOf(user)].client_flag_talking = udat.status;
+                            users[users.indexOf(user)].client_flag_talking = udat.status;
                         }
                     }, this);
                     this.users = users;
