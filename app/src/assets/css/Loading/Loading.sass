@@ -24,10 +24,23 @@ body
     width: 100vw
     color: #fff
     display: flex
+    flex-direction: column
     align-items: center
     justify-content: center
     opacity: 0
     animation: fadeIn 0.5s 0.2s forwards cubic-bezier(0.66, 0.04, 0.29, 1.26)
+    .reload
+        color: #cccccc
+        font-style: italic
+        position: fixed
+        opacity: 0
+        pointer-events: none
+        transform: translateY(12px)
+        transition: all 0.35s
+        &.show
+            pointer-events: all
+            opacity: 1
+            transform: translateY(44px)
     .spinner
         text-align: center
         h3

@@ -9,13 +9,15 @@
     "url": "https://github.com/pbarbiero/basic-electron-react-boilerplate.git"
   },
   "license": "MIT",
-  "main": "main.js",
+  "main": "app/main.js",
   "scripts": {
     "prod": "webpack --config webpack.build.config.js && electron --noDevServer .",
-    "dev": "webpack-dev-server --hot --watch --host 127.0.0.1 --config=./webpack.dev.config.js",
+    "server": "webpack-dev-server --hot --host 127.0.0.1 --config=./webpack.dev.config.js",
+    "dev": "concurrently -k \"npm run server\" \"npm run start\" ",
+    "start": "NODE_ENV=development electron ./app/main.js",
     "build": "webpack --config webpack.build.config.js",
-    "package": "webpack --config webpack.build.config.js",
-    "postpackage": "electron-packager ./ --out=./builds"
+    "package": "webpack --config webpack.build.config.js --output-path ../electron-packager",
+    "postpackage": "electron-packager ../electron-packager --out=./builds"
   },
   "devDependencies": {
     "babel-core": "^6.24.1",

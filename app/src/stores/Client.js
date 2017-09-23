@@ -26,7 +26,6 @@ class ClientStore extends EventEmitter {
             this.emit("update");
         }
     }
-
     reqUsers(cid) {
         console.log('reqUsers')
         this.client.request(`channelclientlist cid=${cid} -voice -uid`)
@@ -48,7 +47,6 @@ class ClientStore extends EventEmitter {
 
                 this.client.notifyOn('notifytalkstatuschange','schandlerid=1', (res) => {
                     let udat = this.client.parse(res);
-                    console.log(this.client.parse(res))
                     let users = this.users;
                     this.users.forEach(function(user) {
                         if(user.clid == udat.clid) {
@@ -115,7 +113,7 @@ class ClientStore extends EventEmitter {
                 console.log(res)
                 setTimeout(()=>{
                     console.log('whima')
-                    this.reqWhoami();             
+                    this.reqWhoami();
                 }, 50)
             })
     }

@@ -4,8 +4,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { spawn } = require('child_process');
 
 // Config directories
-const SRC_DIR = path.resolve(__dirname, 'src');
-const OUTPUT_DIR = path.resolve(__dirname, 'dist');
+const SRC_DIR = path.resolve(__dirname, 'app/src');
+const OUTPUT_DIR = path.resolve(__dirname, 'app/dist');
 
 // Any directories you will be adding code/files into, need to be added to this array so webpack will pick them up
 const defaultInclude = [SRC_DIR];
@@ -14,7 +14,7 @@ module.exports = {
   entry: SRC_DIR + '/index.js',
   output: {
     path: OUTPUT_DIR,
-    publicPath: '/',
+    publicPath: '/app',
     filename: 'bundle.js'
   },
   module: {
@@ -60,15 +60,6 @@ module.exports = {
       colors: true,
       chunks: false,
       children: false
-    },
-    setup() {
-      spawn(
-        'electron',
-        ['.'],
-        { shell: true, env: process.env, stdio: 'inherit' }
-      )
-      .on('close', code => process.exit(0))
-      .on('error', spawnError => console.error(spawnError));
     }
   }
 };

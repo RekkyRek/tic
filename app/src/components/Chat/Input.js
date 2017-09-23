@@ -40,7 +40,7 @@ class Input extends React.Component {
     //console.log(input.selectionStart, input.selectionEnd)
     let word = input.value.substring(0,input.selectionEnd).split(' ').pop()
     let isEmoji = false;
-    if(word.indexOf(':') > -1 && word.length > 1) {
+    if(word.indexOf(':') > -1 && word.length > 1 && word.lastIndexOf(':') == 0) {
       word = word.split(':').pop();
       isEmoji = true;
       this.setState({searchRes: emoji.search(word).splice(0, 5)})
@@ -64,14 +64,22 @@ class Input extends React.Component {
         return false;
       }
     } else if (e.keyCode == 13 && e.shiftKey == false) {
+      let word = input.value.substring(0,input.selectionEnd);
+
       if(this.state.searchRes.length > 0) {
-        let word = input.value.substring(0,input.selectionEnd);
         let selemoj = this.state.searchRes[this.refs.sel.state.selected];
         let begin = word.lastIndexOf(':');
         let end = begin + `:${selemoj.key}:`.length;
-        console.log(input.selectionEnd)
+        
+        if(word.split(' ').pop().indexOf(':') != 0) {
+          e.preventDefault()
+          return false;
+        }
+
         let newstr = input.value.substring(0, begin) + `:${selemoj.key}:` + input.value.substring(input.selectionEnd, 1024)
+
         input.value = newstr;
+        this.setState({searchRes: []})
         console.log(word, begin, newstr)
 
         input.setSelectionRange(end,end);

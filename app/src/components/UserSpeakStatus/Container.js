@@ -46,14 +46,11 @@ class Container extends React.Component {
     const client = this.props.client;
 
     setTimeout(()=>{
-      client.notifyOn('notifyclientupdated', 'schandlerid=1', ()=>{
-        console.log('update')
-        ClientActions.getUsers(this.state.whoami.cid);
-      })
-      client.notifyOn('notifyclientmoved', 'schandlerid=1', ()=>{
-        console.log('update')
-        ClientActions.getWhoami();
-      })
+      client.notifyOn('notifyclientmoved', 'schandlerid=1',      () => ClientActions.getWhoami())
+      client.notifyOn('notifyclientupdated', 'schandlerid=1',    () => ClientActions.getUsers(this.state.whoami.cid))
+      client.notifyOn('notifyclientleftview', 'schandlerid=1',   () => ClientActions.getUsers(this.state.whoami.cid))
+      client.notifyOn('notifycliententerview', 'schandlerid=1',  () => ClientActions.getUsers(this.state.whoami.cid))
+      client.notifyOn('notifyclientmoved', 'schandlerid=1',      () => ClientActions.getUsers(this.state.whoami.cid))
     }, 200);
   }
 

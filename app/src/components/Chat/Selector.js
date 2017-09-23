@@ -9,16 +9,14 @@ class Selector extends React.Component {
       selected: 0
     }
   }
-  up() {
-    console.log(this.state.selected)
+  down() {
     if(this.state.selected + 1 < this.props.items.length) {
         this.setState({ selected: this.state.selected + 1 });
     } else {
         this.setState({ selected: 0 });
     }
   }
-  down() {
-    console.log(this.state.selected)
+  up() {
     if(this.state.selected - 1 > -1) {
         this.setState({ selected: this.state.selected - 1 });
     } else {
