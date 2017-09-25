@@ -2,7 +2,7 @@ import { EventEmitter } from "events"
 
 import dispatcher from '../dispatchers/dispatcher'
 
-import ts3client from '/media/hampus/Anis/ts3-clientquery/'
+import ts3client from 'ts3-clientquery'
 const client = ts3client.newQuery()
 
 import * as Helpers from '../components/Utils/Helpers';

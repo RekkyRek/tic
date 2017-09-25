@@ -1,4 +1,4 @@
-const ord = require('/media/hampus/Anis/phpord');
+const ord = require('phpord');
 
 export function escape(str) {
     let urls = str.match(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g)
