@@ -10,6 +10,7 @@ import fs from 'fs';
 
 import UserSpeakStatus from './UserSpeakStatus/Container';
 import Chat from './Chat/Container';
+import MusicBot from './MusicBot/Container';
 import Loader from './Loader';
 
 class App extends React.Component {
@@ -47,6 +48,7 @@ class App extends React.Component {
           <div id="mainApp">
             <UserSpeakStatus client={this.state.client} store={ClientStore}/>
             <Chat client={this.state.client} store={ClientStore}/>
+            <MusicBot />
           </div>
         ) : (
           <Loader />
