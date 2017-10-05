@@ -1,0 +1,42 @@
+.modal
+    height: 100vh
+    width: 100vw
+    position: fixed
+    top: 0px
+    left: 0px
+    background: rgba(0,0,0,0.5)
+    z-index: 4000
+    display: flex
+    align-items: center
+    justify-content: center
+    transition: opacity 0.3s, transform 0.3s
+.modalHidden
+    pointer-events: none
+    opacity: 0
+    transform: scale(1.2)
+.modalClose
+    pointer-events: none
+    opacity: 0
+    transform: scale(0.8)
+.modalCard
+    background: #ffffff
+    border-radius: 8px
+    padding: 24px
+    min-width: 400px
+    p, span
+        color: #444
+    h1, h2, h3, h4
+        color: #222
+    input
+        color: #222
+        &:focus
+            border-color: #516ada
+    button
+        border: none
+        margin-left: 12px
+        transition: background 0.2s
+        &:hover
+            min-width: 100px
+            background: #efefef
+        span
+            margin: 0px

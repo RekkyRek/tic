@@ -1,0 +1,41 @@
+.chatInput
+    margin: 0.5rem
+    padding: 12px
+    background: #484b51
+    display: flex
+    position: relative
+    .selector
+        position: absolute
+        bottom: calc(100% + 12px)
+        left: 0px
+    button
+        height: 27px
+        min-height: 27px
+        width: 27px
+        min-width: 27px
+        padding: 0px
+        margin: 0px
+        display: flex
+        align-items: center
+        justify-content: center
+        border: none
+        &:hover
+            .emoji
+                filter: grayscale(0)
+                transform: scale(1.1)
+        .emoji
+            filter: grayscale(1)
+            transition: filter 0.2s, transform 0.2s
+            height: 22px
+            width: 22px
+            margin-left: -10px
+    textarea
+        font-family: 'Roboto', sans-serif
+        border: none
+        resize: none
+        background: transparent
+        color: #fff
+        width: calc(100% - 32px)
+        &:focus
+            outline: none
+        
