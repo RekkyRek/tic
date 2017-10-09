@@ -4,6 +4,7 @@ import twemoji from 'twemoji';
 import emoji from 'node-emoji';
 import * as Helpers from '../Utils/Helpers';
 
+const hexToHsl = require('hex-to-hsl');
 const fs = require('fs');
 const mime = require('mime');
 
@@ -34,6 +35,7 @@ class Message extends React.Component {
     r = r.replace(/\\\//g, "\/");   // Slash
     r = r.replace(/\\\\/g, "\\");   // Backslash
     r = Helpers.escapeHtml(r);
+    r = Helpers.parseTSForm(r);
 
     if(r.match(/\[URL\](.*?|\n)\[\/URL\]/g) != null) {
     r.match(/\[URL\](.*?|\n)\[\/URL\]/g).forEach(function(url) {
@@ -91,7 +93,7 @@ class Message extends React.Component {
 
     let impath = `${this.props.cacheDir}/clients/avatar_${Helpers.ts3_base16(this.props.msg.invokeruid)}`;
 
-    let imseed = Math.floor(Math.random() * 360)
+    let imseed = hexToHsl(`#${Helpers.hexEncode(this.props.msg.invokername).substr(0,6)}`)[0];
     let imbak = `linear-gradient(19deg, hsl(${imseed}, 98%, 56%) 0%, hsl(${imseed+15}, 100%, 56%) 100%)`
     if(!fs.existsSync(impath)) {
       impath = "";
@@ -144,7 +146,7 @@ class Message extends React.Component {
         </div>
         <div className="chatText">        
           <p><b>{name}</b></p>
-          <span dangerouslySetInnerHTML={{ __html: this.state.innerHTML }} />
+          <pre dangerouslySetInnerHTML={{ __html: this.state.innerHTML }} />
           {this.state.msgImage != '' &&
             <div className="msgMedia">
               <img src={this.state.msgImage} onLoad={()=>{this.setState({ loaded: true })}}/>

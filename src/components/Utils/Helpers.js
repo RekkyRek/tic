@@ -1,12 +1,55 @@
 const ord = require('phpord');
 
 export function escapeHtml(str) {
-    str = str.replace(/\>/g, '\\u003e');
-    str = str.replace(/\</g, '\\u003c');
-    str = str.replace(/\\\u2028/g, '\\u2028');
-    str = str.replace(/\\\u2029/g, '\\u2029');
+    str = str.replace(/\>/g, '&gt');
+    str = str.replace(/\</g, '&lt;');
     return str;
 };
+
+export function hexEncode(str) {
+    var hex, i;
+
+    var result = "";
+    for (i=0; i<str.length; i++) {
+        hex = str.charCodeAt(i).toString(16);
+        result += ("000"+hex).slice(-4);
+    }
+
+    return result
+}
+
+export function parseTSForm(str) {
+    let colorTags = str.match(/\[COLOR=(.*?)\](.*?)\[\/COLOR]/g);
+    if(colorTags) {
+        colorTags.forEach(function(tag) {
+            let color = tag.substring(7,14);
+            str = str.replace(tag, `<pre style="color: ${color}; display: inline-block; margin: 0px">${tag.substring(15,tag.length-8)}</pre>`);
+        }, this);
+    }
+
+    let bTags = str.match(/\[B\](.*?)\[\/B]/g);
+    if(bTags) {
+        bTags.forEach(function(tag) {
+            str = str.replace(tag, `<b>${tag.substring(3,tag.length-4)}</b>`);
+        }, this);
+    }
+
+    let uTags = str.match(/\[U\](.*?)\[\/U]/g);
+    if(uTags) {
+        uTags.forEach(function(tag) {
+            str = str.replace(tag, `<u>${tag.substring(3,tag.length-4)}</u>`);
+        }, this);
+    }
+
+    let iTags = str.match(/\[I\](.*?)\[\/I]/g);
+    if(iTags) {
+        iTags.forEach(function(tag) {
+            str = str.replace(tag, `<i>${tag.substring(3,tag.length-4)}</i>`);
+        }, this);
+    }
+
+    return str;
+}
 
 export function escape(str) {
     let urls = str.match(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g)

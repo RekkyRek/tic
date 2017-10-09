@@ -1,8 +1,4 @@
-.chatMessage {
-  display: flex;
-}
-
-.chatMessage .chatImage {
+.chatImage {
   margin: 12px;
   height: 54px;
   width: 54px;
@@ -10,12 +6,16 @@
   background: #fff;
 }
 
-.chatMessage .chatImage div {
+.chatImage div {
   background-size: cover !important;
   height: 54px;
   width: 54px;
   transform: scale(1.02);
   border-radius: 54px;
+}
+
+.chatMessage {
+  display: flex;
 }
 
 .chatMessage .chatText p {
@@ -28,12 +28,17 @@
   word-break: break-word;
 }
 
-.chatMessage .chatText span {
+.chatMessage .chatText pre {
   display: block;
   font-family: 'Roboto', sans-serif;
   color: white;
+  margin: 0px;
   margin-right: 24px;
   word-break: break-word;
+}
+
+.chatMessage .chatText pre b {
+  font-weight: 600;
 }
 
 .chatMessage .chatText .msgMedia {
