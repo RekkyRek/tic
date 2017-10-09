@@ -1,11 +1,14 @@
 import '../../assets/css/MusicBot/Container.sass';
 import React, { Component } from 'react';
 
-class MusicBot extends React.Component {
+import MusicButton from './Button.js';
+import MusicBot from './MusicBot.js';
+
+class Container extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-
+      active: false,
     }
   }
 
@@ -20,10 +23,11 @@ class MusicBot extends React.Component {
   render() {
     return (
       <div className="musicContainer">
-        <p>Meme</p>
+        <MusicButton onToggle={(res)=>{this.setState({active: res})}}/>
+        <MusicBot active={this.state.active}/>
       </div>
     );
   }
 }
 
-export default MusicBot;
+export default Container;

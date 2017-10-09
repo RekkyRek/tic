@@ -34,12 +34,15 @@ class ChatLog extends React.Component {
       if(store.messages[store.whoami.cid] == this.state.messages) {
         return;
       }
-      this.setState({
-        cid: store.whoami.cid,
-        messages: store.messages[store.whoami.cid],
-        cacheDir: store.cacheDir,
-        users: store.users
-      })  
+      setTimeout(()=> {
+        store = this.props.store;
+        this.setState({
+          cid: store.whoami.cid,
+          messages: store.messages[store.whoami.cid],
+          cacheDir: store.cacheDir,
+          users: store.users
+        }) 
+      }, 100);
     });
     store.on('msgupdate', () => {
       store = this.props.store;
@@ -67,7 +70,7 @@ class ChatLog extends React.Component {
   }
 
   componentDidMount() {
-    setTimeout(this.scrollBottom, 100);
+    setTimeout(this.scrollBottom, 350);
   }
 
   getUser(users, uid) {
