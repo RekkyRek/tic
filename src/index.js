@@ -16,7 +16,8 @@ var running = false;
 
 // A simple pid lookup 
 function isRunning(cb) {
-    ps.lookup({
+    cb(true);
+    /*ps.lookup({
         command: 'ts3',
     }, function(err, resultList ) {
     if (err) {
@@ -28,8 +29,8 @@ function isRunning(cb) {
                 running = process.pid != null;
             }
         });
-        cb(running);
-    });
+        
+    });*/
 }
 
 // Since we are using HtmlWebpackPlugin WITHOUT a template, we should create our own root node in the body element before rendering into it
